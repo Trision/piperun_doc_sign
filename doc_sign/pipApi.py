@@ -5,7 +5,7 @@ from .gcpstorage import StorageGCP
 class PipeApi:
 
     def __init__(self):
-        self.api_key = "0c79e1eb5a167724a3c4675cd40b9a22"
+        self.api_key = os.getenv('PIPE_KEY')
         self.url     = "https://api.pipe.run/"
         self.headers = {"token": self.api_key}
         self.storage = StorageGCP()
@@ -46,7 +46,7 @@ class PipeApi:
     def assinar_documento(self, sign_id, email, sign_type):
         api = "v1/signatures"
         url_full = self.url + api
-        payload = {"signature_document_id":sign_id, "email":email, "witness":sign_type, "type":2}
+        payload = {"signature_document_id":sign_id, "email":email, "witness":sign_type, "type":2, "status":0}
         headers = {"accept": "application/json", "content-type": "application/json", "token": self.api_key}
         try:
             response = requests.post(url_full, json=payload, headers=headers).json()
@@ -67,12 +67,23 @@ class PipeApi:
             return e
     
     def verificar_assinaturas(self, id_sign):
-        api     = f"v1/signatures?show=3&signature_document_id={id_sign}" 
+        api     = f"v1/signatures/{id_sign}" 
         url_full = self.url + api
         headers = {"accept": "application/json", "token": self.api_key}
         try:
             response = requests.get(url_full, headers=headers).json()
-            print(response)
+            # print(response)
+            return response
+        except Exception as e:
+            response = {'success':e}
+            return response
+    
+    def listar_assinaturas(self, id_sign, qtd_signs):
+        api     = f"v1/signatures?show={qtd_signs}&signature_document_id={id_sign}" 
+        url_full = self.url + api
+        headers = {"accept": "application/json", "token": self.api_key}
+        try:
+            response = requests.get(url_full, headers=headers).json()
             return response
         except Exception as e:
             response = {'error':e}
@@ -80,7 +91,7 @@ class PipeApi:
     
 if __name__ == "__main__":
     pi = PipeApi()# 38843361
-    pi.upload_documento("./TESTANDO ASSINATURA PIPE.pdf", "49589772", "teste.pdf")
+    # pi.upload_documento("./TESTANDO ASSINATURA PIPE.pdf", "49589772", "teste.pdf")
     # pi.enviar_documento('teste.pdf', '38989637', '49589772')
     # pi.assinar_documento("972170", "lfernando@acruxcapital.com", 1)
     # pi.verificar_assinaturas('972170')

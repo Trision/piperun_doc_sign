@@ -8,5 +8,5 @@ urlpatterns = [
     path('enviar_assinatura', views.assinar_documento, name="connect_assinar_documento"),#Aqui envia para o cliente/signatario assinar
     path('assinatura', views.webhook_assinatura, name='connect_webhook_assinatura'),
     path('assinatura_full', views.webhook_fullsign, name='connect_webhook_assinatura_full'),
-    path('del', views.apaga, name='teste')
+    path('listar_documentos/<int:deal_id>', views.listar_docs, name='connect_listar_documentos'),
 ]

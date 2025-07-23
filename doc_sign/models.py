@@ -17,6 +17,7 @@ class Documento(models.Model):
     gcp_path        = models.TextField(blank=True, null=True)
     full_signed     = models.BooleanField(null=False, blank=False, default=False)
     aws_url         = models.TextField(null=True, blank=True)
+    is_to_sign      = models.BooleanField(null=False, blank=False, default=False)
 
 class Assinatura(models.Model):
 
@@ -25,10 +26,15 @@ class Assinatura(models.Model):
     email           = models.TextField(blank=True, null=True)
     tipo            = models.IntegerField(blank=True, null=True)
     documento       = models.ForeignKey(Documento, null=False, blank=False, on_delete=models.CASCADE)
-    momment         = models.DateTimeField(blank=True, null=True)
+    signed_at       = models.DateTimeField(blank=True, null=True)
     id_signatario   = models.IntegerField(blank=True, null=True)
     id_sign         = models.IntegerField(blank=True, null=True)
     sign_hash       = models.TextField(blank=True, null=True)
     cpf             = models.TextField(blank=True, null=True)
     nascimento      = models.DateField(blank=True, null=True)
+    status          = models.IntegerField(blank=True, null=True)
+    ip_assinatura   = models.TextField(blank=True, null=True)
+    send_at         = models.DateTimeField(blank=True, null=True)
+    updated_at      = models.DateTimeField(blank=True, null=True)
+
     

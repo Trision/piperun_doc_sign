@@ -8,7 +8,7 @@ PATH = os.environ.get('ROOTPATH')
 class StorageGCP:
     
     def __init__(self):
-        self.bucket_name = "resolve-contas-docs" #
+        self.bucket_name = "NOME_BUCKET" #
         self.credentials = "" + 'mythical-runner-350501-79f85db1d3dd.json'
         self.client      = storage.Client.from_service_account_json(self.credentials)
         self.bucket      = self.client.bucket(self.bucket_name)
